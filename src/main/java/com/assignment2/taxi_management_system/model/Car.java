@@ -1,6 +1,7 @@
 package com.assignment2.taxi_management_system.model;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name= "car")
@@ -9,6 +10,9 @@ public class Car {
     @Id
     @Column
     private long VIN;
+
+    @Column
+    private ZonedDateTime dateCreated;
 
     @Column
     private String make;
@@ -32,10 +36,12 @@ public class Car {
     private double rate;
 
     public Car() {
+        this.dateCreated = ZonedDateTime.now();
     }
 
     public Car(long VIN, String make, String model, String color, boolean convertible, double rating, String licence_plate, double rate) {
         this.VIN = VIN;
+        this.dateCreated = ZonedDateTime.now();
         this.make = make;
         this.model = model;
         this.color = color;
