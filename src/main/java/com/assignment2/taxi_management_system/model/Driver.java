@@ -9,7 +9,7 @@ import java.util.Date;
 public class Driver {
     @Id
     @Column
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
@@ -23,6 +23,9 @@ public class Driver {
 
     @Column
     private double rating;
+
+    @OneToOne
+    private Car car;
 
     public Driver(long id, String license_number, String phone_number, double rating) {
         this.id = id;

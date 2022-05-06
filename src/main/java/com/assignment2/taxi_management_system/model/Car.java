@@ -2,6 +2,7 @@ package com.assignment2.taxi_management_system.model;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import com.assignment2.taxi_management_system.model.Driver;
 
 @Entity
 @Table(name= "car")
@@ -34,6 +35,9 @@ public class Car {
 
     @Column
     private double rate;
+
+    @OneToOne
+    private Driver driver;
 
     public Car() {
         this.dateCreated = ZonedDateTime.now();
