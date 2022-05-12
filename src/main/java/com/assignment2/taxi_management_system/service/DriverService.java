@@ -20,17 +20,17 @@ public class DriverService {
         return criteria.list();
     }
 
-    public long saveDriver(Driver driver){
+    public Long saveDriver(Driver driver){
         sessionFactory.getCurrentSession().save(driver);
         return driver.getId();
     }
 
-    public long deleteDriver(Driver driver){
+    public Long deleteDriver(Driver driver){
         sessionFactory.getCurrentSession().delete(driver);
         return driver.getId();
     }
 
-    public long updateDriver(Driver driver){
+    public Long updateDriver(Driver driver){
         sessionFactory.getCurrentSession().update(driver);
         return driver.getId();
     }

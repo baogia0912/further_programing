@@ -9,11 +9,15 @@ import com.assignment2.taxi_management_system.model.Driver;
 public class Car {
 
     @Id
-    @Column
-    private long VIN;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
-    private ZonedDateTime dateCreated;
+    private String VIN;
+
+    @Column
+    private final ZonedDateTime dateCreated = ZonedDateTime.now();
 
     @Column
     private String make;
@@ -36,16 +40,14 @@ public class Car {
     @Column
     private double rate;
 
-    @OneToOne
+    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL)
     private Driver driver;
 
-    public Car() {
-        this.dateCreated = ZonedDateTime.now();
-    }
+    public Car() {}
 
-    public Car(long VIN, String make, String model, String color, boolean convertible, double rating, String licence_plate, double rate) {
+    public Car(long id,String VIN, String make, String model, String color, boolean convertible, double rating, String licence_plate, double rate, Driver driver) {
+        this.id = id;
         this.VIN = VIN;
-        this.dateCreated = ZonedDateTime.now();
         this.make = make;
         this.model = model;
         this.color = color;
@@ -53,13 +55,26 @@ public class Car {
         this.rating = rating;
         this.licence_plate = licence_plate;
         this.rate = rate;
+        this.driver = driver;
     }
 
-    public long getVIN() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ZonedDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getVIN() {
         return VIN;
     }
 
-    public void setVIN(long VIN) {
+    public void setVIN(String VIN) {
         this.VIN = VIN;
     }
 
@@ -117,5 +132,13 @@ public class Car {
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 }

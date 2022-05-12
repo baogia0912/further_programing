@@ -1,5 +1,7 @@
 package com.assignment2.taxi_management_system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -8,12 +10,12 @@ import java.util.Date;
 @Table (name = "driver")
 public class Driver {
     @Id
-    @Column
+    @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
-    private ZonedDateTime dateCreated;
+    private final ZonedDateTime dateCreated = ZonedDateTime.now();
 
     @Column
     private String license_number;
@@ -25,22 +27,25 @@ public class Driver {
     private double rating;
 
     @OneToOne
+    @JsonIgnore
     private Car car;
 
-    public Driver(long id, String license_number, String phone_number, double rating) {
+    public Driver(Long id, String license_number, String phone_number, double rating, Car car) {
         this.id = id;
-        this.dateCreated = ZonedDateTime.now();
         this.license_number = license_number;
         this.phone_number = phone_number;
         this.rating = rating;
+        this.car = car;
     }
 
-    public Driver() {
-        this.dateCreated = ZonedDateTime.now();
-    }
+    public Driver() {}
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public ZonedDateTime getDateCreated() {
+        return dateCreated;
     }
 
     public String getLicense_number() {
@@ -55,7 +60,7 @@ public class Driver {
         return rating;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -71,4 +76,11 @@ public class Driver {
         this.rating = rating;
     }
 
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }
