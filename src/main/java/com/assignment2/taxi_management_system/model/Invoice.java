@@ -14,12 +14,12 @@ public class Invoice {
     @Column
     private final ZonedDateTime dateCreated = ZonedDateTime.now();
 
-    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "customerId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
-    @ManyToOne(targetEntity = Driver.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "driverId", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "driver_id", referencedColumnName = "id")
     private Driver driver;
 
     private double totalCharge;
