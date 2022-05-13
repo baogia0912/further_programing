@@ -1,14 +1,22 @@
 package com.assignment2.taxi_management_system.service;
 import com.assignment2.taxi_management_system.model.Booking;
+import com.assignment2.taxi_management_system.model.Car;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
 @Service
+@SuppressWarnings("unchecked")
 public class BookingService {
     @Autowired
     private SessionFactory sessionFactory;
@@ -33,5 +41,18 @@ public class BookingService {
     public Long updateBooking(Booking booking){
         sessionFactory.getCurrentSession().update(booking);
         return booking.getId();
+    }
+
+    public Booking findByID(long id){
+        return sessionFactory.getCurrentSession().find(Booking.class, id);
+    }
+
+    public List<Booking> findByDate(ZonedDateTime date_created){
+        System.out.println(date_created);
+
+        return (List<Booking>) sessionFactory.getCurrentSession()
+                .createQuery("from Booking where dateCreated >= :start and dateCreated <= :end")
+                .setParameter("start", date_created)
+                .setParameter("end", date_created.plusDays(1)).list();
     }
 }

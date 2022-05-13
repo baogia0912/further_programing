@@ -12,7 +12,7 @@ public class Customer {
     private long id;
 
     @Column
-    private ZonedDateTime dateCreated;
+    private final ZonedDateTime dateCreated = ZonedDateTime.now();
 
     @Column
     private String name;
@@ -21,16 +21,15 @@ public class Customer {
     private String address;
 
     @Column
-    private String phone;
+    private String phone_number;
 
-    public Customer(){dateCreated = ZonedDateTime.now();}
+    public Customer(){}
 
-    public Customer(long id, String name, String address, String phone) {
+    public Customer(long id, String name, String address, String phone_number) {
         this.id = id;
-        dateCreated = ZonedDateTime.now();
         this.name = name;
         this.address = address;
-        this.phone = phone;
+        this.phone_number = phone_number;
     }
 
     public long getId() {
@@ -39,6 +38,10 @@ public class Customer {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public ZonedDateTime getDateCreated() {
+        return dateCreated;
     }
 
     public String getName() {
@@ -57,11 +60,11 @@ public class Customer {
         this.address = address;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPhone_number() {
+        return phone_number;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhone_number(String phone) {
+        this.phone_number = phone;
     }
 }
