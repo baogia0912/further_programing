@@ -21,6 +21,9 @@ public class Driver {
     private String license_number;
 
     @Column
+    private String name;
+
+    @Column
     private String phone_number;
 
     @Column
@@ -30,8 +33,9 @@ public class Driver {
     @JsonIgnore
     private Car car;
 
-    public Driver(Long id, String license_number, String phone_number, double rating, Car car) {
+    public Driver(Long id, String name, String license_number, String phone_number, double rating, Car car) {
         this.id = id;
+        this.name = name;
         this.license_number = license_number;
         this.phone_number = phone_number;
         this.rating = rating;
@@ -42,6 +46,14 @@ public class Driver {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ZonedDateTime getDateCreated() {

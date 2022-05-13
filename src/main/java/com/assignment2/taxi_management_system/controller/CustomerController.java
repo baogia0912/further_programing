@@ -1,12 +1,10 @@
 package com.assignment2.taxi_management_system.controller;
 
+import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,25 @@ public class CustomerController {
     @RequestMapping(path = "/customers", method = RequestMethod.PUT)
     public long updateCustomers(@RequestBody Customer customer) {
         return customerService.updateCustomer(customer);
+    }
+
+    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "id")
+    public Customer findByID(@RequestParam("id") long id){
+        return customerService.findByID(id);
+    }
+
+    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "name")
+    public List<Customer> findByName(@RequestParam("name") String name){
+        return customerService.findByName(name);
+    }
+
+    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "phone_number")
+    public List<Customer> findByPhoneNumber(@RequestParam("phone_number") String phone_number){
+        return customerService.findByPhoneNumber(phone_number);
+    }
+
+    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "address")
+    public List<Customer> findByAddress(@RequestParam("address") String address){
+        return customerService.findByAddress(address);
     }
 }

@@ -1,5 +1,6 @@
 package com.assignment2.taxi_management_system.service;
 
+import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.model.Customer;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Transactional
 @Service
+@SuppressWarnings("unchecked")
 public class CustomerService {
     @Autowired
     private SessionFactory sessionFactory;
@@ -35,5 +37,24 @@ public class CustomerService {
     public long updateCustomer(Customer customer){
         sessionFactory.getCurrentSession().update(customer);
         return customer.getId();
+    }
+
+    public Customer findByID(long id){
+        return sessionFactory.getCurrentSession().find(Customer.class, id);
+    }
+
+    public List<Customer> findByName(String name){
+        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where name = :name")
+                .setParameter("name", name).list();
+    }
+
+    public List<Customer> findByAddress(String address){
+        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where address = :address")
+                .setParameter("address", address).list();
+    }
+
+    public List<Customer> findByPhoneNumber(String phone_number){
+        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where phone_number = :phone_number")
+                .setParameter("phone_number", phone_number).list();
     }
 }

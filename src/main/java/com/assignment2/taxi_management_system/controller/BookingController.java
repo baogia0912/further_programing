@@ -1,8 +1,15 @@
 package com.assignment2.taxi_management_system.controller;
 import com.assignment2.taxi_management_system.model.Booking;
+import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Book;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 @RestController
 public class BookingController {
@@ -26,5 +33,15 @@ public class BookingController {
     @RequestMapping(path = "/bookings", method = RequestMethod.PUT)
     public Long updateBooking(@RequestBody Booking booking){
         return bookingService.updateBooking(booking);
+    }
+
+    @RequestMapping(path = "/bookings", method = RequestMethod.GET, params = "id")
+    public Booking findByID(@RequestParam("id") long id){
+        return bookingService.findByID(id);
+    }
+
+    @RequestMapping(path = "/bookings", method = RequestMethod.GET, params = "date_created")
+    public List<Booking> findByDate(@RequestParam("date_created") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date_created){
+        return bookingService.findByDate(date_created.toInstant().atZone(ZoneId.systemDefault()));
     }
 }
