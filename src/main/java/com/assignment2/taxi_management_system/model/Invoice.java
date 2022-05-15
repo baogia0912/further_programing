@@ -1,6 +1,9 @@
 package com.assignment2.taxi_management_system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.awt.print.Book;
 import java.time.ZonedDateTime;
 
 @Entity

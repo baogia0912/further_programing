@@ -1,5 +1,6 @@
 package com.assignment2.taxi_management_system.model;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -20,23 +21,28 @@ public class Booking {
     private String endLocation;
 
     @Column
-    private String pickUpDateTime;
+    private ZonedDateTime pickUpDateTime;
 
     @Column
-    private String dropOffDateTime;
+    private ZonedDateTime dropOffDateTime;
 
     @Column
     private double distance;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    private Invoice invoice;
+
     public Booking(){}
 
-    public Booking(Long id, String startLocation, String endLocation, String pickUpDateTime, String dropOffDateTime, double distance) {
+    public Booking(Long id, String startLocation, String endLocation, ZonedDateTime pickUpDateTime, ZonedDateTime dropOffDateTime, double distance, Invoice invoice) {
         this.id = id;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.pickUpDateTime = pickUpDateTime;
         this.dropOffDateTime = dropOffDateTime;
         this.distance = distance;
+        this.invoice = invoice;
     }
 
     public Long getId() {
@@ -67,19 +73,19 @@ public class Booking {
         this.endLocation = endLocation;
     }
 
-    public String getPickUpDateTime() {
+    public ZonedDateTime getPickUpDateTime() {
         return pickUpDateTime;
     }
 
-    public void setPickUpDateTime(String pickUpDateTime) {
+    public void setPickUpDateTime(ZonedDateTime pickUpDateTime) {
         this.pickUpDateTime = pickUpDateTime;
     }
 
-    public String getDropOffDateTime() {
+    public ZonedDateTime getDropOffDateTime() {
         return dropOffDateTime;
     }
 
-    public void setDropOffDateTime(String dropOffDateTime) {
+    public void setDropOffDateTime(ZonedDateTime dropOffDateTime) {
         this.dropOffDateTime = dropOffDateTime;
     }
 
@@ -89,5 +95,13 @@ public class Booking {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
