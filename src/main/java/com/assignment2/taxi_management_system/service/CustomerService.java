@@ -34,9 +34,12 @@ public class CustomerService {
         return customer.getId();
     }
 
-    public long updateCustomer(Customer customer){
-        sessionFactory.getCurrentSession().update(customer);
-        return customer.getId();
+    public long updateCustomer(Customer newCustomer){
+        Customer oldCustomer = sessionFactory.getCurrentSession().find(Customer.class, newCustomer.getId());
+        if(newCustomer.getName() != null){oldCustomer.setName(newCustomer.getName());}
+        if(newCustomer.getAddress() != null){oldCustomer.setAddress(newCustomer.getAddress());}
+        if(newCustomer.getPhone_number() != null){oldCustomer.setPhone_number(newCustomer.getPhone_number());}
+        return newCustomer.getId();
     }
 
     public Customer findByID(long id){

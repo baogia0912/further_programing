@@ -32,9 +32,13 @@ public class DriverService {
         return driver.getId();
     }
 
-    public Long updateDriver(Driver driver){
-        sessionFactory.getCurrentSession().update(driver);
-        return driver.getId();
+    public Long updateDriver(Driver newDriver){
+        Driver oldDriver = sessionFactory.getCurrentSession().find(Driver.class, newDriver.getId());
+        if(newDriver.getLicense_number() != null){oldDriver.setLicense_number(newDriver.getLicense_number());}
+        if(newDriver.getName() != null){oldDriver.setName(newDriver.getName());}
+        if(newDriver.getPhone_number() != null){oldDriver.setPhone_number(newDriver.getPhone_number());}
+        if(newDriver.getRating() != 0){oldDriver.setRating(newDriver.getRating());}
+        return newDriver.getId();
     }
 
     public Driver findByID(long id){

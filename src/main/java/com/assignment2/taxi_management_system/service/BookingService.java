@@ -47,12 +47,12 @@ public class BookingService {
         return sessionFactory.getCurrentSession().find(Booking.class, id);
     }
 
-    public List<Booking> findByDate(ZonedDateTime date_created){
-        System.out.println(date_created);
+    public List<Booking> findByDate(ZonedDateTime start_date, ZonedDateTime end_date){
+
 
         return (List<Booking>) sessionFactory.getCurrentSession()
                 .createQuery("from Booking where dateCreated >= :start and dateCreated <= :end")
-                .setParameter("start", date_created)
-                .setParameter("end", date_created.plusDays(1)).list();
+                .setParameter("start", start_date)
+                .setParameter("end", end_date.plusHours(23).plusMinutes(59).plusSeconds(59)).list();
     }
 }

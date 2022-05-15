@@ -1,6 +1,8 @@
 package com.assignment2.taxi_management_system.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -29,7 +31,8 @@ public class Driver {
     @Column
     private double rating;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id", unique = true, referencedColumnName = "id")
     @JsonIgnore
     private Car car;
 

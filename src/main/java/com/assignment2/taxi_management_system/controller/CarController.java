@@ -29,6 +29,11 @@ public class CarController {
         return carService.updateCar(car);
     }
 
+    @RequestMapping(path = "/cars", method = RequestMethod.PATCH)
+    public Long setDriver(@RequestBody Car car){
+        return carService.setDriver(car);
+    }
+
     @RequestMapping(path = "/cars", method = RequestMethod.GET, params = "id")
     public Car findByID(@RequestParam("id") long id){
         return carService.findByID(id);

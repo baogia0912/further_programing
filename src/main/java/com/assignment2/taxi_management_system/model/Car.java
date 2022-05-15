@@ -3,6 +3,8 @@ package com.assignment2.taxi_management_system.model;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import com.assignment2.taxi_management_system.model.Driver;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name= "car")
@@ -35,17 +37,18 @@ public class Car {
     private double rating;
 
     @Column
-    private String licence_plate;
+    private String license_plate;
 
     @Column
     private double rate;
 
-    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,mappedBy = "car", cascade = CascadeType.ALL)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Driver driver;
 
     public Car() {}
 
-    public Car(long id,String VIN, String make, String model, String color, boolean convertible, double rating, String licence_plate, double rate, Driver driver) {
+    public Car(long id,String VIN, String make, String model, String color, boolean convertible, double rating, String license_plate, double rate, Driver driver) {
         this.id = id;
         this.VIN = VIN;
         this.make = make;
@@ -53,7 +56,7 @@ public class Car {
         this.color = color;
         this.convertible = convertible;
         this.rating = rating;
-        this.licence_plate = licence_plate;
+        this.license_plate = license_plate;
         this.rate = rate;
         this.driver = driver;
     }
@@ -118,12 +121,12 @@ public class Car {
         this.rating = rating;
     }
 
-    public String getLicence_plate() {
-        return licence_plate;
+    public String getLicense_plate() {
+        return license_plate;
     }
 
-    public void setLicence_plate(String licence_plate) {
-        this.licence_plate = licence_plate;
+    public void setLicense_plate(String license_plate) {
+        this.license_plate = license_plate;
     }
 
     public double getRate() {
