@@ -24,8 +24,7 @@ public class BookingService {
         this.sessionFactory = sessionFactory;
     }
     public List<Booking> getAllBookings(){
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        return criteria.list();
+        return (List<Booking>) sessionFactory.getCurrentSession().createQuery("from Booking order by dateCreated").list();
     }
 
     public Long saveBooking(Booking booking){
@@ -39,7 +38,22 @@ public class BookingService {
     }
 
     public Long updateBooking(Booking booking){
-        sessionFactory.getCurrentSession().update(booking);
+        Booking oldBooking = sessionFactory.getCurrentSession().find(Booking.class, booking.getId());
+        if(booking.getStartLocation() != null){
+            oldBooking.setStartLocation(booking.getStartLocation());
+        }
+        if(booking.getEndLocation() != null){
+            oldBooking.setEndLocation(booking.getEndLocation());
+        }
+        if(booking.getPickUpDateTime() != null){
+            oldBooking.setPickUpDateTime(booking.getPickUpDateTime());
+        }
+        if(booking.getDropOffDateTime() != null){
+            oldBooking.setDropOffDateTime(booking.getDropOffDateTime());
+        }
+        if(booking.getDistance() > 0){
+            oldBooking.setDistance(booking.getDistance());
+        }
         return booking.getId();
     }
 
@@ -48,8 +62,6 @@ public class BookingService {
     }
 
     public List<Booking> findByDate(ZonedDateTime start_date, ZonedDateTime end_date){
-
-
         return (List<Booking>) sessionFactory.getCurrentSession()
                 .createQuery("from Booking where dateCreated >= :start and dateCreated <= :end")
                 .setParameter("start", start_date)
