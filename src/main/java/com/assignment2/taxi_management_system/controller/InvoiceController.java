@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 public class InvoiceController {
+
     @Autowired
     private InvoiceService invoiceService;
+
     @RequestMapping(path = "/admin/invoices", method = RequestMethod.GET)
     public List<Invoice> getAllInvoices(){
         return invoiceService.getAllInvoices();
