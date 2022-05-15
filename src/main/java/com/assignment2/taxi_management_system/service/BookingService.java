@@ -24,8 +24,7 @@ public class BookingService {
         this.sessionFactory = sessionFactory;
     }
     public List<Booking> getAllBookings(){
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        return criteria.list();
+        return (List<Booking>) sessionFactory.getCurrentSession().createQuery("from Booking order by dateCreated").list();
     }
 
     public Long saveBooking(Booking booking){
@@ -48,8 +47,6 @@ public class BookingService {
     }
 
     public List<Booking> findByDate(ZonedDateTime start_date, ZonedDateTime end_date){
-
-
         return (List<Booking>) sessionFactory.getCurrentSession()
                 .createQuery("from Booking where dateCreated >= :start and dateCreated <= :end")
                 .setParameter("start", start_date)
