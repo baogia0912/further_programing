@@ -1,5 +1,6 @@
 package com.assignment2.taxi_management_system.service;
 import com.assignment2.taxi_management_system.model.Car;
+import com.assignment2.taxi_management_system.model.Driver;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,22 +26,36 @@ public class CarService {
     }
 
     public Long deleteCar(Car car){
+//        Car oldCar = sessionFactory.getCurrentSession().find(Car.class, car.getId());
+//        if(oldCar.getDriver() != null){
+//            sessionFactory.getCurrentSession().find(Driver.class, oldCar.getDriver().getId()).setCar(null);
+//        }
         sessionFactory.getCurrentSession().delete(car);
         return car.getId();
     }
 
-    public Long updateCar(Car car){
-        if(car.getDriver() != null){
-            if (car.getDriver().getCar() == null) {
-                car.getDriver().setCar(car);
-                sessionFactory.getCurrentSession().update(car);
-                return 1L;
-            }else{
-                return 0L;
-            }
+    public Long updateCar(Car newCar){
+        Car oldCar = sessionFactory.getCurrentSession().find(Car.class, newCar.getId());
+        if(newCar.getVIN() != null){oldCar.setVIN(newCar.getVIN());}
+        if(newCar.getMake() != null){oldCar.setMake(newCar.getMake());}
+        if(newCar.getModel() != null){oldCar.setModel(newCar.getModel());}
+        if(newCar.getColor() != null){oldCar.setColor(newCar.getColor());}
+        if(newCar.getRating() != 0){oldCar.setRating(newCar.getRating());}
+        if(newCar.getRate() != 0){oldCar.setRate(newCar.getRate());}
+        if(newCar.getLicense_plate() != null){oldCar.setLicense_plate(newCar.getLicense_plate());}
+        return newCar.getId();
+    }
+
+    public Long setDriver(Car car){
+        Driver driver = sessionFactory.getCurrentSession().find(Driver.class, car.getDriver().getId());
+        Car oldCar = sessionFactory.getCurrentSession().find(Car.class, car.getId());
+        if(driver.getCar() != null || oldCar.getDriver() != null){
+            return 0L;
+        }else{
+            oldCar.setDriver(driver);
+            driver.setCar(oldCar);
+            return car.getId();
         }
-        sessionFactory.getCurrentSession().update(car);
-        return 2L;
     }
 
     public Car findByID(long id){
@@ -83,7 +98,7 @@ public class CarService {
     }
 
     public List<Car> findByLicensePlate(String license_plate){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where licence_plate = :license_plate")
+        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where license_plate = :license_plate")
                 .setParameter("license_plate", license_plate).list();
     }
 }
