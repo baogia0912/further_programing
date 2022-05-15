@@ -38,7 +38,22 @@ public class BookingService {
     }
 
     public Long updateBooking(Booking booking){
-        sessionFactory.getCurrentSession().update(booking);
+        Booking oldBooking = sessionFactory.getCurrentSession().find(Booking.class, booking.getId());
+        if(booking.getStartLocation() != null){
+            oldBooking.setStartLocation(booking.getStartLocation());
+        }
+        if(booking.getEndLocation() != null){
+            oldBooking.setEndLocation(booking.getEndLocation());
+        }
+        if(booking.getPickUpDateTime() != null){
+            oldBooking.setPickUpDateTime(booking.getPickUpDateTime());
+        }
+        if(booking.getDropOffDateTime() != null){
+            oldBooking.setDropOffDateTime(booking.getDropOffDateTime());
+        }
+        if(booking.getDistance() > 0){
+            oldBooking.setDistance(booking.getDistance());
+        }
         return booking.getId();
     }
 
