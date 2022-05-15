@@ -8,22 +8,22 @@ import java.util.List;
 public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
-    @RequestMapping(path = "/invoices", method = RequestMethod.GET)
+    @RequestMapping(path = "/admin/invoices", method = RequestMethod.GET)
     public List<Invoice> getAllInvoices(){
         return invoiceService.getAllInvoices();
     }
 
-    @RequestMapping(path = "/invoices", method = RequestMethod.POST)
+    @RequestMapping(path = "/admin/invoices", method = RequestMethod.POST)
     public Long addInvoice(@RequestBody Invoice invoice){
         return invoiceService.saveInvoice(invoice);
     }
 
-    @RequestMapping(path = "/invoices", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/admin/invoices", method = RequestMethod.DELETE)
     public Long deleteInvoice(@RequestBody Invoice invoice){
         return invoiceService.deleteInvoice(invoice);
     }
 
-    @RequestMapping(path = "/invoices", method = RequestMethod.PUT)
+    @RequestMapping(path = "/admin/invoices", method = RequestMethod.PUT)
     public Long updateInvoice(@RequestBody Invoice invoice){
         return invoiceService.updateInvoice(invoice);
     }

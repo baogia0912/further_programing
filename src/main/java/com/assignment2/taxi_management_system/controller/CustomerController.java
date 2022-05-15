@@ -12,42 +12,42 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-    @RequestMapping(path = "/customers", method = RequestMethod.GET)
+    @RequestMapping(path = "/admin/customers", method = RequestMethod.GET)
     public List<Customer> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.POST)
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.POST)
     public long addCustomer(@RequestBody Customer customer){
         return customerService.saveCustomer(customer);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.DELETE)
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.DELETE)
     public long deleteCustomer(@RequestBody Customer customer){
         return customerService.deleteCustomer(customer);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.PUT)
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.PUT)
     public long updateCustomers(@RequestBody Customer customer) {
         return customerService.updateCustomer(customer);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "id")
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.GET, params = "id")
     public Customer findByID(@RequestParam("id") long id){
         return customerService.findByID(id);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "name")
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.GET, params = "name")
     public List<Customer> findByName(@RequestParam("name") String name){
         return customerService.findByName(name);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "phone_number")
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.GET, params = "phone_number")
     public List<Customer> findByPhoneNumber(@RequestParam("phone_number") String phone_number){
         return customerService.findByPhoneNumber(phone_number);
     }
 
-    @RequestMapping(path = "/customers", method = RequestMethod.GET, params = "address")
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.GET, params = "address")
     public List<Customer> findByAddress(@RequestParam("address") String address){
         return customerService.findByAddress(address);
     }
