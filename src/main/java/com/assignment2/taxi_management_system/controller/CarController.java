@@ -2,7 +2,11 @@ package com.assignment2.taxi_management_system.controller;
 import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,10 +14,17 @@ import java.util.Optional;
 public class CarController {
     @Autowired
     private CarService carService;
-    @RequestMapping(path = "*/cars", method = RequestMethod.GET)
+    @RequestMapping(path = "/cars", method = RequestMethod.GET)
     public List<Car> getAllCars(@RequestParam(value = "page", required = false) Optional<Integer> page,
                                 @RequestParam(value = "limit", required = false) Optional<Integer> limit){
         return carService.getAllCars(page, limit);
+    }
+
+    @RequestMapping(path = {"customer/cars", "admin/cars"}, method = RequestMethod.GET)
+    public List<Car> getAllCarsWithDriver(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date pickUpDateTime,
+                                          @RequestParam(value = "page", required = false) Optional<Integer> page,
+                                          @RequestParam(value = "limit", required = false) Optional<Integer> limit) {
+        return carService.getAllCarsWithDriver(page, limit);
     }
 
     @RequestMapping(path = "/admin/cars", method = RequestMethod.POST)
@@ -36,12 +47,12 @@ public class CarController {
         return carService.setDriver(car);
     }
 
-    @RequestMapping(path = "*/cars", method = RequestMethod.GET, params = "id")
+    @RequestMapping(path = "/cars", method = RequestMethod.GET, params = "id")
     public Car findByID(@RequestParam("id") long id){
         return carService.findByID(id);
     }
 
-    @RequestMapping(path = "*/cars", method = RequestMethod.GET, params = "vin")
+    @RequestMapping(path = "/cars", method = RequestMethod.GET, params = "vin")
     public Car findByVIN(@RequestParam("vin") String VIN){
         return carService.findByVIN(VIN);
     }
