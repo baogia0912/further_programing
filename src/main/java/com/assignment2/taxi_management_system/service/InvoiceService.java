@@ -1,17 +1,15 @@
 package com.assignment2.taxi_management_system.service;
-import com.assignment2.taxi_management_system.model.Booking;
 import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.model.Driver;
 import com.assignment2.taxi_management_system.model.Invoice;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.time.Month;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -127,9 +125,12 @@ public class InvoiceService {
         return sessionFactory.getCurrentSession().find(Invoice.class, id);
     }
 
-    public List<Invoice> findByDate(ZonedDateTime start_date, ZonedDateTime end_date){
-        return (List<Invoice>) sessionFactory.getCurrentSession()
-                .createQuery("from Invoice where dateCreated >= :start and dateCreated <= :end")
+    public List<Invoice> findByDate(ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit) {
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
+                .createQuery("from Invoice where dateCreated >= :start and dateCreated <= :end order by dateCreated")
                 .setParameter("start", start_date)
                 .setParameter("end", end_date.plusHours(23).plusMinutes(59).plusSeconds(59)).list(); }
 
@@ -148,6 +149,4 @@ public class InvoiceService {
         }
         return cal;
     }
-
-
 }
