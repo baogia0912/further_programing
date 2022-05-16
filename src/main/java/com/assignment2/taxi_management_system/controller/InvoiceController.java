@@ -37,12 +37,12 @@ public class InvoiceController {
         return invoiceService.updateInvoice(invoice);
     }
 
-    @RequestMapping(path ="admin/invoice", method = RequestMethod.PATCH)
+    @RequestMapping(path ="admin/invoice/set_driver", method = RequestMethod.PATCH)
     public Long setDriver(@RequestBody Invoice invoice){
         return invoiceService.setDriver(invoice);
     }
 
-    @RequestMapping(path ="admin/invoice", method = RequestMethod.PATCH)
+    @RequestMapping(path ="admin/invoice/set_customer", method = RequestMethod.PATCH)
     public Long setCustomer(@RequestBody Invoice invoice){
         return invoiceService.setCustomer(invoice);
     }
