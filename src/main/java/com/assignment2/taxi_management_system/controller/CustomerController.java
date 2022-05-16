@@ -46,7 +46,7 @@ public class CustomerController {
         return customerService.findByName(name, page, limit);
     }
 
-    @RequestMapping(path = {"/admin/customers", "/customer/customers"} method = RequestMethod.GET, params = "phone_number")
+    @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.GET, params = "phone_number")
     public List<Customer> findByPhoneNumber(@RequestParam("phone_number") String phone_number,
                                             @RequestParam(value = "page", required = false) Optional<Integer> page,
                                             @RequestParam(value = "limit", required = false) Optional<Integer> limit){

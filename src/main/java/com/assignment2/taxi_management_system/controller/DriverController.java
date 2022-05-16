@@ -54,7 +54,7 @@ public class DriverController {
         return driverService.findByPhoneNumber(phone_number, page, limit);
     }
 
-    @RequestMapping(path =  "/admin/drivers" method = RequestMethod.GET, params = "rating")
+    @RequestMapping(path =  "/admin/drivers", method = RequestMethod.GET, params = "rating")
     public List<Driver> findByRating(@RequestParam("rating") double rating, @RequestParam(value = "page", required = false) Optional<Integer> page,
                                      @RequestParam(value = "limit", required = false) Optional<Integer> limit){
         return driverService.findByRating(rating, page, limit);
