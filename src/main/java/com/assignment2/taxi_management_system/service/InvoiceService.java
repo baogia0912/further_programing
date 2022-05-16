@@ -6,7 +6,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.Month;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -105,12 +108,12 @@ public class InvoiceService {
                 .setParameter("start", start_date)
                 .setParameter("end", end_date.plusHours(23).plusMinutes(59).plusSeconds(59)).list(); }
 
-    public double findNumberOfUseInAMonth(long car_id, ZonedDateTime start_date, ZonedDateTime end_date) {
+    public double findNumberOfUseInAMonth(long car_id, ZonedDateTime start_date) {
         return calculateUse((List<Invoice>) sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where Car.id = :car_id and dateCreated >= :start and dateCreated <= :end")
                 .setParameter("car_id", car_id)
                 .setParameter("start", start_date)
-                .setParameter("end", end_date));
+                .setParameter("end", start_date.plusMonths(1)));
     }
 
     public static double calculateUse(List<Invoice> invoices){
@@ -120,5 +123,6 @@ public class InvoiceService {
         }
         return cal;
     }
+
 
 }

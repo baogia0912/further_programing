@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-    @RequestMapping(path = "/customers", method = RequestMethod.GET)
+    @RequestMapping(path = "/admin/customers", method = RequestMethod.GET)
     public List<Customer> getAllCustomers(@RequestParam(value = "page", required = false) Optional<Integer> page,
                                           @RequestParam(value = "limit", required = false) Optional<Integer> limit){
         return customerService.getAllCustomers(page, limit);

@@ -30,6 +30,17 @@ public class CarService {
         return selectQuery.list();
     }
 
+    public List<Car> getAllCarsWithDriver(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where driver != null ");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
+    }
+
     public Long saveCar(Car car){
         sessionFactory.getCurrentSession().save(car);
         return car.getId();
