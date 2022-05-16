@@ -4,11 +4,14 @@ import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.model.Customer;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -19,9 +22,15 @@ public class CustomerService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    public List<Customer> getAllCustomers(){
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Customer.class);
-        return criteria.list();
+    public List<Customer> getAllCustomers(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Customer> selectQuery = sessionFactory.getCurrentSession().createQuery("from Customer");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
     public long saveCustomer(Customer customer){
@@ -46,18 +55,42 @@ public class CustomerService {
         return sessionFactory.getCurrentSession().find(Customer.class, id);
     }
 
-    public List<Customer> findByName(String name){
-        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where name = :name")
-                .setParameter("name", name).list();
+    public List<Customer> findByName(String name, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Customer> selectQuery = sessionFactory.getCurrentSession().createQuery(
+                "from Customer where name = :name")
+                .setParameter("name", name);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Customer> findByAddress(String address){
-        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where address = :address")
-                .setParameter("address", address).list();
+    public List<Customer> findByAddress(String address, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Customer> selectQuery = sessionFactory.getCurrentSession().createQuery(
+                        "from Customer where address = :address")
+                .setParameter("address", address);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Customer> findByPhoneNumber(String phone_number){
-        return (List<Customer>) sessionFactory.getCurrentSession().createQuery("from Customer where phone_number = :phone_number")
-                .setParameter("phone_number", phone_number).list();
+    public List<Customer> findByPhoneNumber(String phone_number, Optional<Integer> page, Optional<Integer> limit) {
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Customer> selectQuery = sessionFactory.getCurrentSession().createQuery(
+                        "from Customer where phone_number = :phone_number")
+                .setParameter("phone_number", phone_number);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 }

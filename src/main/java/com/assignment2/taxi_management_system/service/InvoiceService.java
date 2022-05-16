@@ -3,11 +3,13 @@ import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.model.Driver;
 import com.assignment2.taxi_management_system.model.Invoice;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -18,8 +20,15 @@ public class InvoiceService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    public List<Invoice> getAllInvoices(){
-        return (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice order by dateCreated").list();
+    public List<Invoice> getAllInvoices(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession().createQuery("from Invoice order by dateCreated");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
     public Long saveInvoice(Invoice invoice){
@@ -56,52 +65,95 @@ public class InvoiceService {
         return revenue;
     }
 
-    public List<Invoice> findByCustomerInDate(long customer_id, ZonedDateTime start_date, ZonedDateTime end_date){
-        return (List<Invoice>) sessionFactory.getCurrentSession()
+    public List<Invoice> findByCustomerInDate(long customer_id, ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where Customer.id =: customer_id and dateCreated >= :start and dateCreated <= :end")
                 .setParameter("customer_id", customer_id)
                 .setParameter("start", start_date)
-                .setParameter("end", end_date).list();
+                .setParameter("end", end_date);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Invoice> findByDriverInDate(long driver_id, ZonedDateTime start_date, ZonedDateTime end_date){
-        return (List<Invoice>) sessionFactory.getCurrentSession()
+    public List<Invoice> findByDriverInDate(long driver_id, ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where Driver.id = :driver_id and dateCreated >= :start and dateCreated <= :end")
                 .setParameter("driver_id", driver_id)
                 .setParameter("start", start_date)
-                .setParameter("end", end_date).list();
+                .setParameter("end", end_date);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public double findRevenueInDate(ZonedDateTime start_date, ZonedDateTime end_date) {
-        return calculateRevenue((List<Invoice>) sessionFactory.getCurrentSession()
+    public double findRevenueInDate(ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where dateCreated >= :start and dateCreated <= :end")
                 .setParameter("start", start_date)
-                .setParameter("end", end_date));
+                .setParameter("end", end_date);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return calculateRevenue(selectQuery.list());
     }
 
-    public double findRevenueByCustomerInDate(long customer_id, ZonedDateTime start_date, ZonedDateTime end_date) {
-        return calculateRevenue((List<Invoice>) sessionFactory.getCurrentSession()
+    public double findRevenueByCustomerInDate(long customer_id, ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where Customer .id = :customer_id and dateCreated >= :start and dateCreated <= :end")
                 .setParameter("customer_id", customer_id)
                 .setParameter("start", start_date)
-                .setParameter("end", end_date));
+                .setParameter("end", end_date);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return calculateRevenue(selectQuery.list());
     }
 
-    public double findRevenueByDriverInDate(long driver_id, ZonedDateTime start_date, ZonedDateTime end_date) {
-        return calculateRevenue((List<Invoice>) sessionFactory.getCurrentSession()
+    public double findRevenueByDriverInDate(long driver_id, ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where Driver.id = :driver_id and dateCreated >= :start and dateCreated <= :end")
                 .setParameter("driver_id", driver_id)
                 .setParameter("start", start_date)
-                .setParameter("end", end_date));
+                .setParameter("end", end_date);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return calculateRevenue(selectQuery.list());
     }
 
     public Invoice findByID(long id){
         return sessionFactory.getCurrentSession().find(Invoice.class, id);
     }
 
-    public List<Invoice> findByDate(ZonedDateTime start_date, ZonedDateTime end_date){
-        return (List<Invoice>) sessionFactory.getCurrentSession()
+    public List<Invoice> findByDate(ZonedDateTime start_date, ZonedDateTime end_date, Optional<Integer> page, Optional<Integer> limit) {
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Invoice> selectQuery = sessionFactory.getCurrentSession()
                 .createQuery("from Invoice where dateCreated >= :start and dateCreated <= :end")
                 .setParameter("start", start_date)
-                .setParameter("end", end_date.plusHours(23).plusMinutes(59).plusSeconds(59)).list(); }
+                .setParameter("end", end_date.plusHours(23).plusMinutes(59).plusSeconds(59));
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
+    }
 }

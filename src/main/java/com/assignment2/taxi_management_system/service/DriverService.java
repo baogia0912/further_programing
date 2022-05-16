@@ -1,12 +1,15 @@
 package com.assignment2.taxi_management_system.service;
 import com.assignment2.taxi_management_system.model.Car;
+import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.model.Driver;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -17,9 +20,15 @@ public class DriverService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    public List<Driver> getAllDrivers(){
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Driver.class);
-        return criteria.list();
+    public List<Driver> getAllDrivers(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Driver> selectQuery = sessionFactory.getCurrentSession().createQuery("from Driver ");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
     public Long saveDriver(Driver driver){
@@ -45,9 +54,16 @@ public class DriverService {
         return sessionFactory.getCurrentSession().find(Driver.class, id);
     }
 
-    public List<Driver> findByName(String name){
-        return (List<Driver>) sessionFactory.getCurrentSession().createQuery("from Driver where name = :name")
-                .setParameter("name", name).list();
+    public List<Driver> findByName(String name, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Driver> selectQuery = sessionFactory.getCurrentSession().createQuery("from Driver where name = :name")
+                .setParameter("name", name);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
     public Driver findByLicenseNumber(String license_number){
@@ -55,13 +71,27 @@ public class DriverService {
                 .setParameter("license_number", license_number).list();
     }
 
-    public List<Driver> findByPhoneNumber(String phone_number){
-        return (List<Driver>) sessionFactory.getCurrentSession().createQuery("from Driver where phone_number = :phone_number")
-                .setParameter("phone_number", phone_number).list();
+    public List<Driver> findByPhoneNumber(String phone_number, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Driver> selectQuery = sessionFactory.getCurrentSession().createQuery("from Driver where phone_number = :phone_number")
+                .setParameter("phone_number", phone_number);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Driver> findByRating(double rating){
-        return (List<Driver>) sessionFactory.getCurrentSession().createQuery("from Driver where rating = :rating")
-                .setParameter("rating", rating).list();
+    public List<Driver> findByRating(double rating, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Driver> selectQuery = sessionFactory.getCurrentSession().createQuery("from Driver where rating = :rating")
+                .setParameter("rating", rating);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 }
