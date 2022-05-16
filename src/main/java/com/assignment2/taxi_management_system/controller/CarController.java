@@ -2,7 +2,11 @@ package com.assignment2.taxi_management_system.controller;
 import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +20,24 @@ public class CarController {
         return carService.getAllCars(page, limit);
     }
 
-    @RequestMapping(path = "/cars", method = RequestMethod.POST)
+    @RequestMapping(path = {"customer/cars", "admin/cars"}, method = RequestMethod.GET)
+    public List<Car> getAllCarsWithDriver(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date pickUpDateTime,
+                                          @RequestParam(value = "page", required = false) Optional<Integer> page,
+                                          @RequestParam(value = "limit", required = false) Optional<Integer> limit) {
+        return carService.getAllCarsWithDriver(page, limit);
+    }
+
+    @RequestMapping(path = "/admin/cars", method = RequestMethod.POST)
     public Long addCar(@RequestBody Car car){
         return carService.saveCar(car);
     }
 
-    @RequestMapping(path = "/cars", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/admin/cars", method = RequestMethod.DELETE)
     public Long deleteCar(@RequestBody Car car){
         return carService.deleteCar(car);
     }
 
-    @RequestMapping(path = "/cars", method = RequestMethod.PUT)
+    @RequestMapping(path = "/admin/cars", method = RequestMethod.PUT)
     public Long updateCar(@RequestBody Car car){
         return carService.updateCar(car);
     }
