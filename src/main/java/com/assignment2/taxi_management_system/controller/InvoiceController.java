@@ -61,41 +61,34 @@ public class InvoiceController {
                 limit);
     }
 
+    @RequestMapping(path = "/invoices/revenue", method = RequestMethod.GET)
+    public double findRevenueAll() {
+        return invoiceService.findRevenueAll();
+    }
+
     @RequestMapping(path = "/invoices/revenue", method = RequestMethod.GET, params = {"start_date", "end_date"})
     public double findRevenueInDate(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
-                                    @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
-                                    @RequestParam(value = "page", required = false) Optional<Integer> page,
-                                    @RequestParam(value = "limit", required = false) Optional<Integer> limit) {
+                                    @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date) {
         return invoiceService.findRevenueInDate(start_date.toInstant().atZone(ZoneId.systemDefault()),
-                end_date.toInstant().atZone(ZoneId.systemDefault()),
-                page,
-                limit);
+                end_date.toInstant().atZone(ZoneId.systemDefault()));
     }
 
     @RequestMapping(path = "/invoices/revenue", method = RequestMethod.GET, params = {"customer_id", "start_date", "end_date"})
     public double findRevenueByCustomerInDate(@RequestParam("customer_id") long customer_id,
                                               @RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
-                                              @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
-                                              @RequestParam(value = "page", required = false) Optional<Integer> page,
-                                              @RequestParam(value = "limit", required = false) Optional<Integer> limit) {
+                                              @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date) {
         return invoiceService.findRevenueByCustomerInDate(customer_id,
                 start_date.toInstant().atZone(ZoneId.systemDefault()),
-                end_date.toInstant().atZone(ZoneId.systemDefault()),
-                page,
-                limit);
+                end_date.toInstant().atZone(ZoneId.systemDefault()));
     }
 
     @RequestMapping(path = "/invoices/revenue", method = RequestMethod.GET, params = {"driver_id", "start_date", "end_date"})
     public double findRevenueByDriverInDate(@RequestParam("driver_id") long driver_id,
                                             @RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
-                                            @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
-                                            @RequestParam(value = "page", required = false) Optional<Integer> page,
-                                            @RequestParam(value = "limit", required = false) Optional<Integer> limit) {
+                                            @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date) {
         return invoiceService.findRevenueByDriverInDate(driver_id,
                 start_date.toInstant().atZone(ZoneId.systemDefault()),
-                end_date.toInstant().atZone(ZoneId.systemDefault()),
-                page,
-                limit);
+                end_date.toInstant().atZone(ZoneId.systemDefault()));
     }
 
     @RequestMapping(path = "/invoices", method = RequestMethod.GET, params = "id")
