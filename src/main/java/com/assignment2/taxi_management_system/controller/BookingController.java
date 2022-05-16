@@ -43,6 +43,11 @@ public class BookingController {
         return bookingService.findByID(id);
     }
 
+    @RequestMapping(path ="admin/booking", method = RequestMethod.PATCH)
+    public Long setInvoice(@RequestBody Booking booking){
+        return bookingService.setInvoice(booking);
+    }
+
     @RequestMapping(path = {"/admin/bookings", "/customer/bookings"}, method = RequestMethod.GET, params = {"start_date", "end_date"})
     public List<Booking> findByDate(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
                                     @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,

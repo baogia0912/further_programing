@@ -1,4 +1,5 @@
 package com.assignment2.taxi_management_system.controller;
+import com.assignment2.taxi_management_system.model.Booking;
 import com.assignment2.taxi_management_system.model.Invoice;
 import com.assignment2.taxi_management_system.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,16 @@ public class InvoiceController {
     @RequestMapping(path = "/admin/invoices", method = RequestMethod.PUT)
     public Long updateInvoice(@RequestBody Invoice invoice){
         return invoiceService.updateInvoice(invoice);
+    }
+
+    @RequestMapping(path ="admin/invoice", method = RequestMethod.PATCH)
+    public Long setDriver(@RequestBody Invoice invoice){
+        return invoiceService.setDriver(invoice);
+    }
+
+    @RequestMapping(path ="admin/invoice", method = RequestMethod.PATCH)
+    public Long setCustomer(@RequestBody Invoice invoice){
+        return invoiceService.setCustomer(invoice);
     }
 
     @RequestMapping(path = "/admin/invoices", method = RequestMethod.GET, params = {"customer_id", "start_date", "end_date"})

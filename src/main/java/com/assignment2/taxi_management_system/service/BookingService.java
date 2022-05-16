@@ -1,7 +1,5 @@
 package com.assignment2.taxi_management_system.service;
-import com.assignment2.taxi_management_system.model.Booking;
-import com.assignment2.taxi_management_system.model.Car;
-import com.assignment2.taxi_management_system.model.Customer;
+import com.assignment2.taxi_management_system.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -46,6 +44,18 @@ public class BookingService {
         sessionFactory.getCurrentSession().delete(booking);
         return booking.getId();
     }
+
+    public Long setInvoice(Booking booking){
+        Invoice invoice = sessionFactory.getCurrentSession().find(Invoice.class, booking.getInvoice().getId());
+        Booking oldBooking = sessionFactory.getCurrentSession().find(Booking.class, booking.getId());
+        if(oldBooking.getInvoice() != null){
+            return 0L;
+        }else{
+            oldBooking.setInvoice(invoice);
+            return booking.getId();
+        }
+    }
+
 
     public Long updateBooking(Booking booking){
         Booking oldBooking = sessionFactory.getCurrentSession().find(Booking.class, booking.getId());

@@ -1,4 +1,5 @@
 package com.assignment2.taxi_management_system.service;
+import com.assignment2.taxi_management_system.model.Booking;
 import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.model.Driver;
 import com.assignment2.taxi_management_system.model.Invoice;
@@ -33,6 +34,30 @@ public class InvoiceService {
     public Long deleteInvoice(Invoice invoice){
         sessionFactory.getCurrentSession().delete(invoice);
         return invoice.getId();
+    }
+
+    public Long setDriver(Invoice invoice) {
+        Driver driver = sessionFactory.getCurrentSession().find(Driver.class, invoice.getDriver().getId());
+        Invoice oidInvoice = sessionFactory.getCurrentSession().find(Invoice.class, invoice.getId());
+
+        if (oidInvoice.getDriver() != null) {
+            return 0L;
+        } else {
+            oidInvoice.setDriver(driver);
+            return invoice.getId();
+        }
+    }
+
+    public Long setCustomer(Invoice invoice) {
+        Customer customer = sessionFactory.getCurrentSession().find(Customer.class, invoice.getCustomer().getId());
+        Invoice oidInvoice = sessionFactory.getCurrentSession().find(Invoice.class, invoice.getId());
+
+        if ( oidInvoice.getCustomer() != null) {
+            return 0L;
+        } else {
+            oidInvoice.setCustomer(customer);
+            return invoice.getId();
+        }
     }
 
     public Long updateInvoice(Invoice invoice){
