@@ -140,4 +140,21 @@ public class InvoiceService {
 
         return selectQuery.list();
     }
+
+    public double findNumberOfUseInAMonth(long car_id, ZonedDateTime start_date, ZonedDateTime end_date) {
+        return calculateUse((List<Invoice>) sessionFactory.getCurrentSession()
+                .createQuery("from Invoice where Car.id = :car_id and dateCreated >= :start and dateCreated <= :end")
+                .setParameter("car_id", car_id)
+                .setParameter("start", start_date)
+                .setParameter("end", end_date));
+    }
+
+    public static double calculateUse(List<Invoice> invoices){
+        double cal = 0;
+        for (int i = 0; i<invoices.size(); i++) {
+            cal += 1;
+        }
+        return cal;
+    }
+
 }

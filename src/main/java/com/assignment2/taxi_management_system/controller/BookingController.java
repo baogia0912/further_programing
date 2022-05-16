@@ -17,33 +17,33 @@ import java.util.Optional;
 public class BookingController {
     @Autowired
     private BookingService bookingService;
-    @RequestMapping(path = "/bookings", method = RequestMethod.GET)
+    @RequestMapping(path = "/admin/bookings", method = RequestMethod.GET)
     public List<Booking> getAllBookings(@RequestParam(value = "page", required = false) Optional<Integer> page,
                                         @RequestParam(value = "limit", required = false) Optional<Integer> limit){
         return bookingService.getAllBookings(page, limit);
     }
 
-    @RequestMapping(path = "/bookings", method = RequestMethod.POST)
+    @RequestMapping(path = {"/admin/bookings","/customer/bookings"}, method = RequestMethod.POST)
     public Long addBooking(@RequestBody Booking booking){
         return bookingService.saveBooking(booking);
     }
 
-    @RequestMapping(path = "/bookings", method = RequestMethod.DELETE)
+    @RequestMapping(path = {"/admin/bookings", "/customer/bookings"}, method = RequestMethod.DELETE)
     public Long deleteBooking(@RequestBody Booking booking){
         return bookingService.deleteBooking(booking);
     }
 
-    @RequestMapping(path = "/bookings", method = RequestMethod.PUT)
+    @RequestMapping(path = {"/admin/bookings","/customer/bookings"}, method = RequestMethod.PUT)
     public Long updateBooking(@RequestBody Booking booking){
         return bookingService.updateBooking(booking);
     }
 
-    @RequestMapping(path = "/bookings", method = RequestMethod.GET, params = "id")
+    @RequestMapping(path = {"/admin/bookings","/customer/bookings"}, method = RequestMethod.GET, params = "id")
     public Booking findByID(@RequestParam("id") long id){
         return bookingService.findByID(id);
     }
 
-    @RequestMapping(path = "/bookings", method = RequestMethod.GET, params = {"start_date", "end_date"})
+    @RequestMapping(path = {"/admin/bookings", "/customer/bookings"}, method = RequestMethod.GET, params = {"start_date", "end_date"})
     public List<Booking> findByDate(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
                                     @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
                                     @RequestParam(value = "page", required = false) Optional<Integer> page,

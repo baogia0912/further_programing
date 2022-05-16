@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,17 @@ public class CarService {
         int pageNum = (page.orElse(1) - 1) * pageSize;
 
         Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
+    }
+
+    public List<Car> getAllCarsWithDriver(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where Car.driver is not null");
         selectQuery.setFirstResult(pageNum);
         selectQuery.setMaxResults(pageSize);
 
