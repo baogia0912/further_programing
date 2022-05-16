@@ -11,13 +11,16 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 public class BookingController {
     @Autowired
     private BookingService bookingService;
     @RequestMapping(path = "/admin/bookings", method = RequestMethod.GET)
-    public List<Booking> getAllBookings(){
-        return bookingService.getAllBookings();
+    public List<Booking> getAllBookings(@RequestParam(value = "page", required = false) Optional<Integer> page,
+                                        @RequestParam(value = "limit", required = false) Optional<Integer> limit){
+        return bookingService.getAllBookings(page, limit);
     }
 
     @RequestMapping(path = {"/admin/bookings","/customer/bookings"}, method = RequestMethod.POST)
@@ -40,8 +43,14 @@ public class BookingController {
         return bookingService.findByID(id);
     }
 
-    @RequestMapping(path = {"/admin/bookings","/customer/bookings"}, method = RequestMethod.GET, params = {"start_date", "end_date"})
-    public List<Booking> findByDate(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date, @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date){
-        return bookingService.findByDate(start_date.toInstant().atZone(ZoneId.systemDefault()), end_date.toInstant().atZone(ZoneId.systemDefault()));
+    @RequestMapping(path = "{/admin/bookings","/customer/bookings"}, method = RequestMethod.GET, params = {"start_date", "end_date"})
+    public List<Booking> findByDate(@RequestParam("start_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start_date,
+                                    @RequestParam("end_date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end_date,
+                                    @RequestParam(value = "page", required = false) Optional<Integer> page,
+                                    @RequestParam(value = "limit", required = false) Optional<Integer> limit){
+        return bookingService.findByDate(start_date.toInstant().atZone(ZoneId.systemDefault()),
+                end_date.toInstant().atZone(ZoneId.systemDefault()),
+                page,
+                limit);
     }
 }

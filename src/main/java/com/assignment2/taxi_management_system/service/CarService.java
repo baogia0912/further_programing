@@ -1,11 +1,14 @@
 package com.assignment2.taxi_management_system.service;
 import com.assignment2.taxi_management_system.model.Car;
+import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.model.Driver;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -16,8 +19,15 @@ public class CarService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    public List<Car> getAllCars(){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car").list();
+    public List<Car> getAllCars(Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car");
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
     public Long saveCar(Car car){
@@ -67,38 +77,80 @@ public class CarService {
                 .setParameter("VIN", VIN).uniqueResult();
     }
 
-    public List<Car> findByMake(String make){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where make = :make")
-                .setParameter("make", make).list();
+    public List<Car> findByMake(String make, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where make = :make")
+                .setParameter("make", make);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByModel(String model){
-        return sessionFactory.getCurrentSession().createQuery("from Car where model = :model")
-                .setParameter("model", model).list();
+    public List<Car> findByModel(String model, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where model = :model")
+                .setParameter("model", model);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByColor(String color){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where color = :color")
-                .setParameter("color", color).list();
+    public List<Car> findByColor(String color, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where color = :color")
+                .setParameter("color", color);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByConvertible(boolean convertible){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where convertible = :convertible")
-                .setParameter("convertible", convertible).list();
+    public List<Car> findByConvertible(boolean convertible, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where convertible = :convertible")
+                .setParameter("convertible", convertible);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByRate(double rate){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where rate = :rate")
-                .setParameter("rate", rate).list();
+    public List<Car> findByRate(double rate, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where rate = :rate")
+                .setParameter("rate", rate);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByRating(double rating){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where rating = :rating")
-                .setParameter("rating", rating).list();
+    public List<Car> findByRating(double rating, Optional<Integer> page, Optional<Integer> limit){
+        int pageSize = limit.orElse(10);
+        int pageNum = (page.orElse(1) - 1) * pageSize;
+
+        Query<Car> selectQuery = sessionFactory.getCurrentSession().createQuery("from Car where rating = :rating")
+                .setParameter("rating", rating);
+        selectQuery.setFirstResult(pageNum);
+        selectQuery.setMaxResults(pageSize);
+
+        return selectQuery.list();
     }
 
-    public List<Car> findByLicensePlate(String license_plate){
-        return (List<Car>) sessionFactory.getCurrentSession().createQuery("from Car where license_plate = :license_plate")
+    public Car findByLicensePlate(String license_plate){
+        return (Car) sessionFactory.getCurrentSession().createQuery("from Car where license_plate = :license_plate")
                 .setParameter("license_plate", license_plate).list();
     }
 }
