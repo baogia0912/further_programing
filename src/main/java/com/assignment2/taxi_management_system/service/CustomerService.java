@@ -1,5 +1,6 @@
 package com.assignment2.taxi_management_system.service;
 
+import com.assignment2.taxi_management_system.model.Booking;
 import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.model.Customer;
 import org.hibernate.Criteria;
@@ -33,9 +34,13 @@ public class CustomerService {
         return selectQuery.list();
     }
 
-    public long saveCustomer(Customer customer){
+    public Booking getBookingDetails(Customer customer){
+        return sessionFactory.getCurrentSession().find(Customer.class, customer.getId()).getBooking();
+    }
+
+    public Customer saveCustomer(Customer customer){
         sessionFactory.getCurrentSession().save(customer);
-        return customer.getId();
+        return customer;
     }
 
     public long deleteCustomer(Customer customer){
@@ -48,6 +53,7 @@ public class CustomerService {
         if(newCustomer.getName() != null){oldCustomer.setName(newCustomer.getName());}
         if(newCustomer.getAddress() != null){oldCustomer.setAddress(newCustomer.getAddress());}
         if(newCustomer.getPhone_number() != null){oldCustomer.setPhone_number(newCustomer.getPhone_number());}
+        if(newCustomer.getBooking() != null){oldCustomer.setBooking(newCustomer.getBooking());}
         return newCustomer.getId();
     }
 

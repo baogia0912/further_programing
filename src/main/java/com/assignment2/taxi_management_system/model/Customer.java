@@ -23,13 +23,18 @@ public class Customer {
     @Column
     private String phone_number;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    private Booking booking;
+
     public Customer(){}
 
-    public Customer(long id, String name, String address, String phone_number) {
+    public Customer(long id, String name, String address, String phone_number, Booking booking) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone_number = phone_number;
+        this.booking = booking;
     }
 
     public long getId() {
@@ -66,5 +71,13 @@ public class Customer {
 
     public void setPhone_number(String phone) {
         this.phone_number = phone;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 }

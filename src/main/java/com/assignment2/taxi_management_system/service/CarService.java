@@ -47,10 +47,6 @@ public class CarService {
     }
 
     public Long deleteCar(Car car){
-//        Car oldCar = sessionFactory.getCurrentSession().find(Car.class, car.getId());
-//        if(oldCar.getDriver() != null){
-//            sessionFactory.getCurrentSession().find(Driver.class, oldCar.getDriver().getId()).setCar(null);
-//        }
         sessionFactory.getCurrentSession().delete(car);
         return car.getId();
     }

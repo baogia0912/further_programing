@@ -1,5 +1,6 @@
 package com.assignment2.taxi_management_system.controller;
 
+import com.assignment2.taxi_management_system.model.Booking;
 import com.assignment2.taxi_management_system.model.Car;
 import com.assignment2.taxi_management_system.model.Customer;
 import com.assignment2.taxi_management_system.service.CustomerService;
@@ -13,14 +14,20 @@ import java.util.Optional;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
+
     @RequestMapping(path = "/admin/customers", method = RequestMethod.GET)
     public List<Customer> getAllCustomers(@RequestParam(value = "page", required = false) Optional<Integer> page,
                                           @RequestParam(value = "limit", required = false) Optional<Integer> limit){
         return customerService.getAllCustomers(page, limit);
     }
 
+    @RequestMapping(path = {"/admin/customers/booking", "/customer/customers/booking"}, method = RequestMethod.GET)
+    public Booking getBooking(@RequestBody Customer customer){
+        return customerService.getBookingDetails(customer);
+    }
+
     @RequestMapping(path = {"/admin/customers", "/customer/customers"}, method = RequestMethod.POST)
-    public long addCustomer(@RequestBody Customer customer){
+    public Customer addCustomer(@RequestBody Customer customer){
         return customerService.saveCustomer(customer);
     }
 
