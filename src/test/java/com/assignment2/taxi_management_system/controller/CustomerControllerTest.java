@@ -27,10 +27,8 @@ class CustomerControllerTest {
     @Autowired
     private MockMvc mvc;
 
-
     @MockBean
     private CustomerService customerService;
-
 
     @Test
     void getAllCustomers() throws Exception {
