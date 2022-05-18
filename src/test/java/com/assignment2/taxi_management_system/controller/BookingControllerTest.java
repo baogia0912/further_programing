@@ -121,8 +121,15 @@ class BookingControllerTest {
     }
 
     @Test
-    void setInvoice() {
-        
+    void setInvoice() throws Exception {
+        Booking book = new Booking(1L, null, null, null, null, 12, null);
+        Mockito.when(bookingService.setInvoice(book)).thenReturn(null);
+
+        MvcResult mvcResult = mvc.perform(patch("/admin/bookings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf())).andExpect(status().isOk()).andReturn();
+        System.out.println(mvcResult.getResponse().getContentAsString());
+        assertEquals(book.getInvoice().getId(), bookingService.setInvoice(book));
     }
 
     @Test
